@@ -18,6 +18,8 @@
 
 
 import copy
+import sys
+import os
 
 # Return cheapest edge pointing out of component
 def cheapestE(unusedE,unusedV,vertex,vertexes_in_component):
@@ -69,8 +71,26 @@ def jpAlgorithm():
     # process input
     V=[]
     E=[]
-    input1 = input("Vertexes: ")
-    input2 = input("Edges:    ")
+    if (len(sys.argv) > 1): # read input from file
+        filename = sys.argv[1]
+        if not os.path.isfile(filename):
+            print("File ",filename," does not exist")
+            exit()
+        print("File: ",filename)
+        file = open(filename)
+        input = file.readline()
+
+        while ("Vertexes:" not in input):
+            input = file.readline()
+        input1 = file.readline()
+
+        while ("Edges:" not in input):
+            input = file.readline()
+        input2 = file.readline()
+        
+    else: # read input from std in
+        input1 = input("Vertexes: ")
+        input2 = input("Edges:    ")
     V=input1.split(" ")
     input2=input2.split(",")
     for i in input2:

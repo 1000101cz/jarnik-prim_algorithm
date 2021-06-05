@@ -1,2 +1,7 @@
-Vertexes: a b c d e f g
-Edges:    a b 1,b c 8,a c 3,d e 9,e f 4,b d 2,c e 7,d f 3
+Description line
+
+Vertexes:
+a b c d e f g
+
+Edges:
+a b 1,b c 8,a c 3,d e 9,e f 4,b d 2,c e 7,d f 3
