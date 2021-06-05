@@ -78,16 +78,16 @@ def jpAlgorithm():
             exit()
         print("File: ",filename)
         file = open(filename)
-        input = file.readline()
+        inputf = file.readline()
 
-        while ("Vertexes:" not in input):
-            input = file.readline()
+        while ("Vertexes:" not in inputf):
+            inputf = file.readline()
         input1 = file.readline()
 
-        while ("Edges:" not in input):
-            input = file.readline()
+        while ("Edges:" not in inputf):
+            inputf = file.readline()
         input2 = file.readline()
-        
+
     else: # read input from std in
         input1 = input("Vertexes: ")
         input2 = input("Edges:    ")
