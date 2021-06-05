@@ -21,45 +21,54 @@ import copy
 def cheapestE(unusedE,unusedV,vertex,vertexes_in_component):
     possibleEdges = []
     minimalEdge = []
+
     for edge in unusedE:
-        if ((edge[0] == vertex) and (edge[1] not in vertexes_in_component)):
+
+        if (((edge[0] == vertex) and (edge[1] not in vertexes_in_component))
+            or ((edge[1] == vertex) and (edge[0] not in vertexes_in_component))):
             possibleEdges.append(edge)
-        elif ((edge[1] == vertex) and (edge[0] not in vertexes_in_component)):
-            possibleEdges.append(edge)
-    #print("Possible edges from ",vertex," are: ",possibleEdges)
+
     if (possibleEdges != []):
         minimalEdge = copy.deepcopy(possibleEdges[0])
+
         for edge in possibleEdges:
+
             if (int(edge[2]) < int(minimalEdge[2])):
                 minimalEdge = copy.deepcopy(edge)
-    #print("cheapestE returns: ",minimalEdge)
     return minimalEdge
+
 
 # Print all components
 def finalPrint(all_components):
     print("");print("")
     totalCost = 0
+
     for i in range(len(all_components)):
-        print("Component",i)
-        print("  Vertexes:  ",(all_components[i][0]))
+        if (len(all_components)>1):
+            print("Component",i+1)
+        print("  Vertexes:  ",", ".join(all_components[i][0]))
         print("  Edges:")
+
         if (all_components[i][1] != []):
             for j in range(len(all_components[i][1])):
-                print("     ",all_components[i][1][j])
+                print("     %c - %c  |  %d"%(all_components[i][1][j][0],
+                    all_components[i][1][j][1],int(all_components[i][1][j][2])))
+
         print("  Component cost: ",all_components[i][2])
         totalCost += int(all_components[i][2])
         print("");print("")
+
     if (len(all_components)>1):
-        print("Total cost of components: ",totalCost)
+        print("Total cost of %d components: "%(len(all_components)),totalCost)
 
 
+# Jarnik-Prim algorithm
 def jpAlgorithm():
+    # process input
     V=[]
     E=[]
-
     input1 = input("Vertexes: ")
     input2 = input("Edges:    ")
-
     V=input1.split(" ")
     input2=input2.split(",")
     for i in input2:
@@ -67,9 +76,11 @@ def jpAlgorithm():
     unusedV = copy.deepcopy(V)
     unusedE = copy.deepcopy(E)
 
+    # inits
     component = [[],[],0] #vertexes, edges, cost
     all_components = []
 
+    # special cases
     if (unusedV == []):
         print("No vertexes entered")
         exit()
@@ -80,26 +91,29 @@ def jpAlgorithm():
         finalPrint(all_components)
         exit()
 
+    # find minimal spanning tree
     while (unusedV != []):
-        if (component[0] == []):
+
+        if (component[0] == []): # component is empty -> add unused vertex
             component[0].append(unusedV[0])
             unusedV.remove(unusedV[0])
         cheapest_edge = []
         lowest_cost = 0
 
-        for vertex in component[0]: # Finding cheapest enge pointing out of current component
-            cheapest_from_vertex = copy.deepcopy(cheapestE(unusedE,unusedV,vertex,component[0]))
-            if (cheapest_edge == []):
+        for vertex in component[0]: # finding cheapest edge pointing out of current component
+            cheapest_from_vertex = cheapestE(unusedE,unusedV,vertex,component[0])
+
+            if (cheapest_edge == []): # no edge points out of this vertex
                 if (cheapest_from_vertex != []):
                     lowest_cost = int(cheapest_from_vertex[2])
-                cheapest_edge = copy.deepcopy(cheapest_from_vertex)
+                cheapest_edge = cheapest_from_vertex
             else:
                 if (cheapest_from_vertex != []):
                     if (int(cheapest_from_vertex[2]) < int(cheapest_edge[2])):
                         lowest_cost = cheapest_from_vertex[2]
-                        cheapest_edge = copy.deepcopy(cheapest_from_vertex)
+                        cheapest_edge = cheapest_from_vertex
 
-        if (cheapest_edge == []): # current component cannot be expanded
+        if (cheapest_edge == []): # current component cannot be expanded -> done
             all_components.append(component)
             component = [[],[],0]
 
@@ -126,6 +140,7 @@ def jpAlgorithm():
                 all_components.append(component)
 
     finalPrint(all_components)
+#end
 
 
 jpAlgorithm()
