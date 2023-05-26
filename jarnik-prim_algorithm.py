@@ -37,7 +37,7 @@ def cheapestE(unusedE,unusedV,vertex,vertexes_in_component):
 
         for edge in possibleEdges:
 
-            if (int(edge[2]) < int(minimalEdge[2])):
+            if (float(edge[2]) < float(minimalEdge[2])):
                 minimalEdge = copy.deepcopy(edge)
     return minimalEdge
 
@@ -55,11 +55,11 @@ def finalPrint(all_components):
 
         if (all_components[i][1] != []):
             for j in range(len(all_components[i][1])):
-                print("     %c - %c  |  %d"%(all_components[i][1][j][0],
-                    all_components[i][1][j][1],int(all_components[i][1][j][2])))
+                print("     %s - %s  |  %f"%(all_components[i][1][j][0],
+                    all_components[i][1][j][1],float(all_components[i][1][j][2])))
 
         print("  Component cost: ",all_components[i][2])
-        totalCost += int(all_components[i][2])
+        totalCost += float(all_components[i][2])
         print("");print("")
 
     if (len(all_components)>1):
@@ -127,11 +127,11 @@ def jpAlgorithm():
 
             if (cheapest_edge == []): # no edge points out of this vertex
                 if (cheapest_from_vertex != []):
-                    lowest_cost = int(cheapest_from_vertex[2])
+                    lowest_cost = float(cheapest_from_vertex[2])
                 cheapest_edge = cheapest_from_vertex
             else:
                 if (cheapest_from_vertex != []):
-                    if (int(cheapest_from_vertex[2]) < int(cheapest_edge[2])):
+                    if (float(cheapest_from_vertex[2]) < float(cheapest_edge[2])):
                         lowest_cost = cheapest_from_vertex[2]
                         cheapest_edge = cheapest_from_vertex
 
@@ -140,7 +140,7 @@ def jpAlgorithm():
             component = [[],[],0]
 
         else:  # component is expanding -> remove edge from unusedE and vertex from unusedV
-            component[2] = component[2] + int(lowest_cost)
+            component[2] = component[2] + float(lowest_cost)
             component[1].append(cheapest_edge)
 
             if (cheapest_edge[0] in unusedV):
